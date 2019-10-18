@@ -142,15 +142,15 @@
 
 
 
-        $("#vehicles").on('click', '.js-update', function () {
+        $("#tasks").on('click', '.js-update', function () {
             var button = $(this);
      
             $.ajax(
                 {
-                    url: "/vehicles/" + button.attr("data-vehicle-id"),
+                    url: "/tasks/" + button.attr("data-vehicle-id"),
                     method: "GET",
                     success: function(data){
-                        window.location = "/vehicles/" + button.attr("data-vehicle-id");
+                        window.location = "/tasks/" + button.attr("data-vehicle-id");
                     }
                 });
 

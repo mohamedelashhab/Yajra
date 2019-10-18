@@ -18,4 +18,8 @@ Route::get('/', function () {
 Route::get('tasks/index', 'TaskController@index')->name('task.index');
 Route::get('tasks/api/list', 'TaskController@list')->name('task.list');
 Route::get('tasks/create', 'TaskController@create')->name('task.create');
+Route::post('tasks/store', 'TaskController@store')->name('task.store');
+Route::get('tasks/{task}', 'TaskController@update')->name('task.update');
+Route::put('tasks/{task}/edit', 'TaskController@edit')->name('task.edit');
+
 Route::delete('/tasks/{task}/delete', 'TaskController@destroy')->name('task.destroy');
