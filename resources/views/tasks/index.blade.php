@@ -27,6 +27,10 @@
     <tbody></tbody>
 </table>
 <a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a>
+<button class="btn btn-danger js-delete">Delete</button>
+<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+
+
 
 
 
@@ -41,6 +45,8 @@
       
         $("#tasks").DataTable(
             {
+                "scrollX": true,
+                "scrollY": 500,
                 ajax:
                 {
                     url: '{!! route('task.list') !!}',
@@ -57,6 +63,12 @@
                     },
                     {
                         data: "image",
+                        "orderable": false,
+                        "searchable":false,
+                        render: function(data, type, row){
+                           
+                            return row.id;
+                        }
 
                     },
                     {
@@ -83,6 +95,7 @@
                         data: "id",
                         "orderable": false,
                         "searchable":false,
+                        
                         render: function (data, type, row) {
                              return "<button class='btn-link js-update' data-vehicle-id=" + data + ">Edit</button>";
                            
@@ -94,23 +107,36 @@
                         "orderable": false,
                         render: function (data)
                         {
-                            return "<button class='btn-link js-delete' data-vehicle-id=" + data + ">Delete</button>";
+                            return "<input type='checkbox' class='' name='tasks[]' value=" + data + ">";
+                            
+                            
                         }
                     }
                 ]
             })
-        $("#vehicles").on('click', '.js-delete', function () {
-            var button = $(this);
-
-            $.ajax(
-                {
-                    url: "/api/vehicles/" + button.attr("data-vehicle-id"),
-                    method: "DELETE",
-                    success: function () {
-                        button.parents("tr").remove();
-                        alert("successfully deleted");
-                    }
+        $(".js-delete").on('click', function () {
+            
+            if(confirm("Are you sure you want to delete tasks ? ")){
+                var button = $(this);
+                var val = [];
+                $(':checkbox:checked').each(function(i){
+                    var ch = $(this);
+                    val[i] = $(this).val();
+                    $.ajax({
+                        url: "/tasks/"+ val[i] + "/delete",
+                        method: "Delete",
+                        data:{
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(data){
+    
+                        }
+                    });
+                    console.log(val[i]);
+                    ch.parents("tr").remove();
                 });
+            }
+            
 
         });
 

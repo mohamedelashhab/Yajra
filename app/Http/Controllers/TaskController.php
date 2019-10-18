@@ -20,7 +20,7 @@ class TaskController extends Controller
     {
   
         
-        $tasks = Task::paginate(10);
+        $tasks = Task::all();
         return response()->json($tasks);
      
         
@@ -29,6 +29,15 @@ class TaskController extends Controller
     public function create()
     {
         return view('tasks.create');
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+        if(request()->expectsJson()){
+            
+            return response('', 404);
+        }
     }
 
     

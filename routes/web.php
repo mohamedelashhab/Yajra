@@ -16,5 +16,6 @@ Route::get('/', function () {
 });
 
 Route::get('tasks/index', 'TaskController@index')->name('task.index');
-Route::get('/tasks/api/list', 'TaskController@list')->name('task.list');
+Route::get('tasks/api/list', 'TaskController@list')->name('task.list');
 Route::get('tasks/create', 'TaskController@create')->name('task.create');
+Route::delete('/tasks/{task}/delete', 'TaskController@destroy')->name('task.destroy');
