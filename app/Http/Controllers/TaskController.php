@@ -37,7 +37,7 @@ class TaskController extends Controller
          $tasks->whereRaw("date(tasks.created_at) >= '" . $start_date . "' AND date(tasks.created_at) <= '" . $end_date . "'");
         }
 
-        $tasks = $tasks->select('*');
+        $tasks = $tasks->select('*')->where('deleted_at', NULL);
 
         return datatables()->of($tasks)
             ->make(true);
