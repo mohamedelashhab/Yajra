@@ -13,36 +13,38 @@
 
         <div class="form-group">
             <label for="">Name:</label>
-            <input type="text" name="name" value="{{$task?$task->name:''}}" class="form-control" id="name" required>
+            <input type="text" name="name" value="{{$task->name??old('name')}}" class="form-control" id="name" required>
         </div>
     
         <div class="form-group">
             <label for="screen_name">screen name:</label>
-            <input type="text" name="screen_name"  value="{{$task?$task->screen_name:''}}" class="form-control" id="screen_name" required>
+            <input type="text" name="screen_name"  value="{{$task->screen_name??old('screen_name')}}" class="form-control" id="screen_name" required>
         </div>
     
         <div class="form-group">
             <label for="user_name">user name:</label>
-            <input type="text" name="user_name" value="{{$task?$task->user_name:''}}"  class="form-control" id="user_name" required>
+            <input type="text" name="user_name" value="{{$task->user_name??old('user_name')}}"  class="form-control" id="user_name" required>
         </div>
     
         <div class="form-group">
-            <textarea name="content" id="content" class="form-control" rows="3">"{{$task?$task->content:''}}"</textarea>
+            <label for="content">description</label>
+            <textarea name="content" id="content" class="form-control" rows="3">{{$task->content??old('content')}}</textarea>
         </div>
 
         <div class="form-group">
-                <textarea name="description" id="description" class="form-control" rows="3">"{{$task?$task->description:''}}"</textarea>
+            <label for="description">description</label>
+            <textarea name="description" id="description" class="form-control" rows="3">{{$task->description??old('description')}}</textarea>
         </div>
 
         <div class="form-group">
-                <input type="file" name="image" value="{{$task?$task->image:''}}"  class="form-control">
+            <label for="image">image:</label>
+                <input type="file" name="image" value="{{$task->image??old('image')}}"  class="form-control">
         </div>
     
-        
+        <label for="statuse">statuse:</label>
         <select name="statuse" id="statuse" class="form-control" required="required">
             @foreach (['statuse1', 'statuse2', 'statuse3'] as $item)
-                <option value="{{$item}}" {{$item==$task->statuse?'checked':''}}>{{$item}}</option>
-    
+                <option value="{{$item}}" {{ !empty($task) && $item==$task->statuse  ?'checked':'' }}>{{$item}}</option>
             @endforeach
         </select>
         

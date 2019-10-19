@@ -22,6 +22,7 @@ class CreateTasksTable extends Migration
             $table->text('description');
             $table->string('user_name');
             $table->enum('statuse', ['statuse1', 'statuse2', 'statuse3'])->default('status1');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

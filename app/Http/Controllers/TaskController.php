@@ -12,19 +12,15 @@ use Yajra\Datatables\Datatables;
 class TaskController extends Controller
 {
     public function index()
-    {
-        
+    {   
         return view('tasks.index');
     }
 
     public function list()
     {
-  
-        
         $tasks = Task::all();
+ 
         return response()->json($tasks);
-     
-        
     }
 
     public function create()
@@ -50,11 +46,14 @@ class TaskController extends Controller
         return redirect()->route('task.index');
     }
 
+
+
     public function update(Task $task)
-    {
-        
+    {   
         return view('tasks.create', ['task'=>$task]);
     }
+
+
     public function edit(Request $request,Task $task)
     {
         request()->validate([
@@ -66,8 +65,9 @@ class TaskController extends Controller
             'status' => Rule::in(['status1', 'status2', 'status3']),
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        $task->update(request()->all());
 
+        $task->update(request()->all());
+        
         return redirect()->route('task.index');
 
     }
@@ -75,10 +75,16 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
-        if(request()->expectsJson()){
-            
+
+        if(request()->expectsJson())
+        {    
             return response('', 404);
         }
+    }
+
+    public function show(Task $task)
+    {
+        return view('tasks.show', ['task' => $task]);
     }
 
     

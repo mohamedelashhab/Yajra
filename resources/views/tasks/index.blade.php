@@ -15,8 +15,8 @@
             <th>name</th>
             <th>image</th>
             <th>screen_name</th>
-            <th>content</th>
-            <th>description</th>
+            {{--  <th>content</th>
+            <th>description</th>  --}}
             <th>user_name</th>
             <th>date</th>
             <th>statuse</th>
@@ -28,7 +28,8 @@
 </table>
 <a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a>
 <button class="btn btn-danger js-delete">Delete</button>
-<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+{{--  <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />  --}}
+
 
 
 
@@ -43,28 +44,35 @@
     $(document).ready(function () {
        
       
-        $("#tasks").DataTable(
+        var table = $("#tasks").DataTable(
             {
                 "scrollX": true,
-                "scrollY": 500,
+                "scrollY": 400,
                 ajax:
                 {
                     url: '{!! route('task.list') !!}',
+                    data: function(d){
+                        d.start_date = $('#start_date').val();
+                        d.end_date = $('#end_date').val();
+                    },
                     dataSrc: ""
                 },
                 columns:
                 [
                     {
                         data: "id",
+                        "class" : "data_id",
 
                     },
                     {
                         data: "name",
+                        "class" : "data",
                     },
                     {
                         data: "image",
                         "orderable": false,
                         "searchable":false,
+                        "class" : "data",
                         render: function(data, type, row){
                            
                             return row.id;
@@ -73,21 +81,20 @@
                     },
                     {
                         data: "screen_name",
+                        "class" : "data",
                     },
-                    {
-                        data: "content",
-                    },
-                    {
-                        data: "description",
-                    },
+                    
                     {
                         data: "user_name",
+                        "class" : "data",
                     },
                     {
                         data: "created_at",
+                        "class" : "data",
                     },
                     {
                         data: "statuse",
+                        "class" : "data",
                     },
                     
 
@@ -156,7 +163,20 @@
 
         });
 
+        
 
+        $("#search").on('click', function(){
+            
+
+        });
+
+
+        $("#tasks").on('click', 'tr .data', function(){
+            let id = $(this).siblings(".data_id").text();
+
+            window.location = "/tasks/" + id + "/show";
+
+        });
 
     });
 
