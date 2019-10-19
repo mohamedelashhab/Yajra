@@ -198,8 +198,8 @@
                 opens: 'left'
               }, function(startDate, endDate, label) {
 
-                start = startDate;
-                end = endDate;
+                start = startDate.format('YYYY-MM-DD');
+                end = endDate.format('YYYY-MM-DD');
                 $('#tasks').DataTable().draw();
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
               });

@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\Datatables\Datatables;
 
+
 class TaskController extends Controller
 {
 
