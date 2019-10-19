@@ -35,13 +35,13 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|min:3|max:49',
-            'screen_name' => 'required|min:3|max:49',
-            'content' => 'nullable|min:3|max:200',
-            'description' => 'nullable|min:3|max:200',
-            'user_name' => 'required|min:3|max:49',
+            'name' => 'required|min:1|max:49',
+            'screen_name' => 'required|min:1|max:49',
+            'content' => 'nullable|min:1|max:200',
+            'description' => 'nullable|min:1|max:200',
+            'user_name' => 'required|min:1|max:49',
             'status' => Rule::in(['status1', 'status2', 'status3']),
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $image_name = $this->saveFiles(request()->file('image'), 'images');
@@ -66,14 +66,17 @@ class TaskController extends Controller
 
     public function edit(Request $request,Task $task)
     {
+        if($task->image){
+            $request->image = $task->image;
+        }
         request()->validate([
-            'name' => 'required|min:3|max:49',
-            'screen_name' => 'required|min:3|max:49',
-            'content' => 'nullable|min:3|max:200',
-            'description' => 'nullable|min:3|max:200',
-            'user_name' => 'required|min:3|max:49',
+            'name' => 'required|min:1|max:49',
+            'screen_name' => 'required|min:1|max:49',
+            'content' => 'nullable|min:1',
+            'description' => 'nullable|min:1',
+            'user_name' => 'required|min:1|max:49',
             'status' => Rule::in(['status1', 'status2', 'status3']),
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $task->update(request()->all());

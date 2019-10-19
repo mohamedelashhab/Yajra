@@ -10,6 +10,15 @@
 @endif
         @csrf
         <legend>Create Task</legend>
+        @if(!empty($task))
+            <div class="">
+                    <img src='{{ asset("uploads/images/$task->image") }}' alt=' {{ asset("uploads/images/$task->image") }}'>
+            </div>
+        @endif
+        <div class="form-group">
+                <label for="image">image:</label>
+                    <input type="file" name="image" value="{{ asset('uploads/images/'.$task->image)??''}}"  class="form-control">
+        </div>
 
         <div class="form-group">
             <label for="">Name:</label>
@@ -36,10 +45,7 @@
             <textarea name="description" id="description" class="form-control" rows="3">{{$task->description??old('description')}}</textarea>
         </div>
 
-        <div class="form-group">
-            <label for="image">image:</label>
-                <input type="file" name="image" value="{{$task->image??old('image')}}"  class="form-control">
-        </div>
+        
     
         <label for="statuse">statuse:</label>
         <select name="statuse" id="statuse" class="form-control" required="required">

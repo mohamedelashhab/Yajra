@@ -5,6 +5,10 @@
 
         <legend>Show Task</legend>
 
+        <div class="">
+                <img src='{{ asset("uploads/images/$task->image") }}' alt=' {{ asset("uploads/images/$task->image") }}'>
+        </div>
+
         <div class="form-group">
             <label for="">Name:</label>
             <input type="text" name="name" value="{{$task?$task->name:''}}" class="form-control" id="name" disabled>
@@ -21,19 +25,20 @@
         </div>
     
         <div class="form-group">
+                <label for="content">content:</label>
             <textarea name="content" id="content" class="form-control" rows="3" disabled>"{{$task?$task->content:''}}"</textarea>
         </div>
 
         <div class="form-group">
+                <label for="description">description:</label>
                 <textarea name="description" id="description" class="form-control" rows="3" disabled>"{{$task?$task->description:''}}"</textarea>
         </div>
         
-        <div class="form-group">
-            <img src='{{ asset("uploads/images/$task->image") }}' alt=' {{ asset("uploads/images/$task->image") }}'>
-        </div>
+        
       
         
         <select name="statuse" id="statuse" class="form-control" required="required" disabled>
+                <label for="statuse">statuse:</label>
             @foreach (['statuse1', 'statuse2', 'statuse3'] as $item)
                 <option value="{{$item}}" {{$item==$task->statuse?'checked':''}}>{{$item}}</option>
             @endforeach
