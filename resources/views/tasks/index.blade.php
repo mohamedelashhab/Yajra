@@ -26,6 +26,8 @@
 </table>
 <a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a>
 <button class="btn btn-danger js-delete">Delete</button>
+<input type="text" name="dates" class="daterange"  value="12/31/2017 - 01/31/2018"/>
+
 {{--  <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />  --}}
 
 
@@ -36,24 +38,38 @@
 
 @endsection
 
-@section('script')
+
+@push('script')
+<!-- JS -->
+{{--  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>  --}}
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+@endpush
+
+@push('script')
 
 <script type="text/javascript">
+    var start = '';
+    var end = '';
     $(document).ready(function () {
+        
        
       
-        var table = $("#tasks").DataTable(
-            {
+        var table = $("#tasks").DataTable({
+                processing: true,
+                serverSide: true,
                 "scrollX": true,
                 "scrollY": 400,
                 ajax:
                 {
                     url: '{!! route('task.list') !!}',
                     data: function(d){
-                        d.start_date = $('#start_date').val();
-                        d.end_date = $('#end_date').val();
+                        d.start_date = start;
+                        d.end_date = end;
+                        dataSrc: d.data;
                     },
-                    dataSrc: ""
+                    type: 'GET',
+                    
                 },
                 columns:
                 [
@@ -72,7 +88,6 @@
                         "searchable":false,
                         "class" : "data",
                         render: function(data, type, row){
-                            console.log('<img src={!! asset("uploads/images") !!}' +'/'+ data +  '">');
                             
                             return '<img src={!! asset("uploads/images") !!}' +'/'+ data +  ' width=100 height=50>';
                         }
@@ -177,6 +192,19 @@
 
         });
 
+        $('.applyBtn').on('click', function(){
+            
+            $('input[name="dates"]').daterangepicker({
+                opens: 'left'
+              }, function(startDate, endDate, label) {
+
+                start = startDate;
+                end = endDate;
+                $('#tasks').DataTable().draw();
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+              });
+        });
+
     });
 
 
@@ -184,7 +212,10 @@
 
 </script>
 
-@endsection
+@endpush
+
+@push('script')
+
 
 
 

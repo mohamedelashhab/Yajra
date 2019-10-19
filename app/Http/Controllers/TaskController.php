@@ -21,9 +21,27 @@ class TaskController extends Controller
 
     public function list()
     {
-        $tasks = Task::all();
+        // dd(request()->all());
+        // $tasks = Task::all();
+        $tasks = Task::query();
+
+        $start_date = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
+        $end_date = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
  
-        return response()->json($tasks);
+        if($start_date && $end_date){
+     
+         $start_date = date('Y-m-d', strtotime($start_date));
+         $end_date = date('Y-m-d', strtotime($end_date));
+          
+         $tasks->whereRaw("date(tasks.created_at) >= '" . $start_date . "' AND date(tasks.created_at) <= '" . $end_date . "'");
+        }
+
+        $tasks = $tasks->select('*');
+
+        return datatables()->of($tasks)
+            ->make(true);
+ 
+        // return response()->json($tasks);
     }
 
     public function create()

@@ -12,12 +12,12 @@
         <legend>Create Task</legend>
         @if(!empty($task))
             <div class="">
-                    <img src='{{ asset("uploads/images/$task->image") }}' alt=' {{ asset("uploads/images/$task->image") }}'>
+                    <img src='{{ asset("uploads/images/$task->image??''") }}' alt=' {{ asset("uploads/images/$task->image") }}'>
             </div>
         @endif
         <div class="form-group">
                 <label for="image">image:</label>
-                    <input type="file" name="image" value="{{ asset('uploads/images/'.$task->image)??''}}"  class="form-control">
+                    <input type="file" name="image"   class="form-control">
         </div>
 
         <div class="form-group">
