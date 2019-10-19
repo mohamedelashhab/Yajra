@@ -26,7 +26,7 @@
 </table>
 <a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a>
 <button class="btn btn-danger js-delete">Delete</button>
-<input type="text" name="dates" class="daterange"  value="12/31/2017 - 01/31/2018"/>
+<input type="text" name="daterange" class="daterange"  value="12/31/2017 - 01/31/2018"/>
 
 {{--  <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />  --}}
 
@@ -194,15 +194,13 @@
 
         $('.applyBtn').on('click', function(){
             
-            $('input[name="dates"]').daterangepicker({
-                opens: 'left'
-              }, function(startDate, endDate, label) {
-
-                start = startDate.format('YYYY-MM-DD');
-                end = endDate.format('YYYY-MM-DD');
-                $('#tasks').DataTable().draw();
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-              });
+           var res =  $('input[name="daterange"]')[0]['defaultValue'];
+           var arr = res.split("-");
+           start = arr[0].trim();
+           end = arr[1].trim();
+           $('#tasks').DataTable().draw(true);
+           
+           
         });
 
     });
