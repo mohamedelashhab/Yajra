@@ -7,9 +7,13 @@ use App\Task;
 use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
+    $im = $faker->image(public_path('uploads/images/'),100,50);
+    $str_arr =  explode ("/", $im);
+    $img = str_replace(['\\'], '', $str_arr[2]);
+    // echo($img);
     return [
         'name'  => $faker->name,
-        'image' => $faker->image(storage_path('images'),400,300),
+        'image' => $img,
         'screen_name' => $faker->word,
         'content' => $faker->paragraph,
         'description' => $faker->paragraph,

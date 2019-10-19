@@ -72,8 +72,9 @@
                         "searchable":false,
                         "class" : "data",
                         render: function(data, type, row){
-                           
-                            return row.id;
+                            console.log('<img src={!! asset("uploads/images") !!}' +'/'+ data +  '">');
+                            
+                            return '<img src={!! asset("uploads/images") !!}' +'/'+ data +  ' width=100 height=50>';
                         }
 
                     },

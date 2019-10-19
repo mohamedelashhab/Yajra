@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        if (!file_exists(public_path('uploads/images'))) {
+            mkdir(public_path('uploads/images'), 0777, true);
+        }
         $this->call(TasksTableSeeder::class);
     }
 }
