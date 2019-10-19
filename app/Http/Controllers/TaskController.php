@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\FileUpload;
 use App\Http\Resources\Task as TaskRsource;
 use App\Task;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ use Yajra\Datatables\Datatables;
 
 class TaskController extends Controller
 {
+
+    use FileUpload;
     public function index()
     {   
         return view('tasks.index');
@@ -41,7 +44,14 @@ class TaskController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        Task::create(request()->all());
+        $image_name = $this->saveFiles(request()->file('image'), 'images');
+        $request['image'] = $image_name;
+        // dd($request->all());
+        $task = Task::create($request->all());
+        
+        $task->image = $image_name;
+        // dd($task);
+        $task->save();
 
         return redirect()->route('task.index');
     }

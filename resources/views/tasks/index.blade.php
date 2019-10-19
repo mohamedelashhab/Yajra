@@ -15,8 +15,6 @@
             <th>name</th>
             <th>image</th>
             <th>screen_name</th>
-            {{--  <th>content</th>
-            <th>description</th>  --}}
             <th>user_name</th>
             <th>date</th>
             <th>statuse</th>

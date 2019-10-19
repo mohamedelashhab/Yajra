@@ -27,18 +27,17 @@
         <div class="form-group">
                 <textarea name="description" id="description" class="form-control" rows="3" disabled>"{{$task?$task->description:''}}"</textarea>
         </div>
-
+        
         <div class="form-group">
-                <input type="file" name="image" value="{{$task?$task->image:''}}"  class="form-control" disabled>
+            <img src='{{ asset("uploads/images/$task->image") }}' alt=' {{ asset("uploads/images/$task->image") }}'>
         </div>
-    
+      
         
         <select name="statuse" id="statuse" class="form-control" required="required" disabled>
             @foreach (['statuse1', 'statuse2', 'statuse3'] as $item)
                 <option value="{{$item}}" {{$item==$task->statuse?'checked':''}}>{{$item}}</option>
             @endforeach
         </select>
-        
         
     </form>
 

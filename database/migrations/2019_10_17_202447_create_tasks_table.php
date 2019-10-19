@@ -16,12 +16,12 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50);
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('screen_name', 50);
             $table->text('content');
             $table->text('description');
             $table->string('user_name');
-            $table->enum('statuse', ['statuse1', 'statuse2', 'statuse3'])->default('status1');
+            $table->enum('statuse', ['statuse1', 'statuse2', 'statuse3'])->default('statuse1');
             $table->softDeletes();
             $table->timestamps();
         });
