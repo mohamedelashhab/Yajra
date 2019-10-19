@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('task.index');
 });
 
 Route::get('tasks/index', 'TaskController@index')->name('task.index');

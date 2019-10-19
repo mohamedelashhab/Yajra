@@ -24,9 +24,11 @@
     </thead>
     <tbody></tbody>
 </table>
-<a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a>
-<button class="btn btn-danger js-delete">Delete</button>
-<input type="text" name="daterange" class="daterange"  value="12/31/2017 - 01/31/2018"/>
+<div class="raw">
+<div class="col-md-1"><a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a></div>
+<div class="col-md-1"><button class="btn btn-danger js-delete">Delete</button></div>
+<input type="text" name="daterange" class="daterange form-control col-md-10"  value="12/31/2019 - 01/31/2019"/>
+</div>
 
 {{--  <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />  --}}
 
@@ -193,13 +195,13 @@
         });
 
         $('.applyBtn').on('click', function(){
-            
-           var res =  $('input[name="daterange"]')[0]['defaultValue'];
+
+           var res = $('input[name="daterange"]')[0]['value'];
            var arr = res.split("-");
            start = arr[0].trim();
            end = arr[1].trim();
+           console.log(start, end);
            $('#tasks').DataTable().draw(true);
-           
            
         });
 

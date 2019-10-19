@@ -6,6 +6,8 @@ use App\Http\Controllers\Traits\FileUpload;
 use App\Http\Resources\Task as TaskRsource;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\Datatables\Datatables;
@@ -22,27 +24,29 @@ class TaskController extends Controller
 
     public function list()
     {
-        // dd(request()->all());
-        // $tasks = Task::all();
+    
         $tasks = Task::query();
 
         $start_date = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
         $end_date = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
- 
+
+        
+        
         if($start_date && $end_date){
-     
-         $start_date = date('Y-m-d', strtotime($start_date));
-         $end_date = date('Y-m-d', strtotime($end_date));
-          
-         $tasks->whereRaw("date(tasks.created_at) >= '" . $start_date . "' AND date(tasks.created_at) <= '" . $end_date . "'");
+            $start_date = Carbon::parse($start_date);
+            $end_date = Carbon::parse($end_date);
+            $tasks = $tasks->select('*')->whereNull('deleted_at')->whereDate('created_at','>',$start_date);
+            $tasks->whereDate('created_at', '<', $end_date);
+        }else{
+            $tasks = $tasks->where('deleted_at', NULL);
         }
 
-        $tasks = $tasks->select('*')->where('deleted_at', NULL);
+        
 
         return datatables()->of($tasks)
             ->make(true);
  
-        // return response()->json($tasks);
+        
     }
 
     public function create()
