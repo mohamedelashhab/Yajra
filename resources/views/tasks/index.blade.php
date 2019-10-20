@@ -27,7 +27,8 @@
 <div class="raw">
 <div class="col-md-1"><a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a></div>
 <div class="col-md-1"><button class="btn btn-danger js-delete">Delete</button></div>
-<input type="text" name="daterange" class="daterange form-control col-md-10"  value="12/31/2019 - 01/31/2019"/>
+<input type="text" name="daterange" class="daterange form-control col-md-5 col-sm-2"  value="12/31/2019 - 01/31/2019"/>
+<button class="btn btn-default filterDate" value="Filter">Filter</button>
 </div>
 
 {{--  <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />  --}}
@@ -58,6 +59,12 @@
        
       
         var table = $("#tasks").DataTable({
+                "sScrollX": "100%",
+                "sScrollXInner": "110%",
+                "bScrollCollapse": true,
+                "fixedColumns":   {
+                "leftColumns": 1
+                },
                 processing: true,
                 serverSide: true,
                 "scrollX": true,
@@ -194,7 +201,7 @@
 
         });
 
-        $('.applyBtn').on('click', function(){
+        $('.filterDate').on('click', function(){
 
            var res = $('input[name="daterange"]')[0]['value'];
            var arr = res.split("-");
