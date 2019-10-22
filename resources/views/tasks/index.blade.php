@@ -4,28 +4,49 @@
     datatables
 @endsection
 
+
+@section('style')
+<link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}" />
+
+@endsection
+
+@section('src_script')
+<script src="{{asset('js/app.js')}}"></script>
+@endsection
+
 @section('content')
     
 
-
-<table id="tasks" class="table" >
-    <thead>
-        <tr>
-
-            <th>Delete</th>
-            <th>id</th>
-            <th>name</th>
-            <th>image</th>
-            <th>screen_name</th>
-            <th>user_name</th>
-            <th>date</th>
-            <th>statuse</th>
-            <th>Edit</th>
+<div class="wrapper">
+        
+        <table id="tasks" class="table" >
+                <span class="scroll left-scroll"> &#171;</span>
+                <span class="scroll right-scroll">&#187;</span>  
+                <thead class="">
+                    <tr>
             
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+                        <th>Delete</th>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>image</th>
+                        <th>screen_name</th>
+                        <th>user_name</th>
+                        <th>date</th>
+                        <th>statuse</th>
+                        <th>Edit</th>
+                        
+                        
+                    </tr>
+                </thead>
+                
+                <tbody></tbody>
+
+                
+
+                
+        </table>         
+</div>
+
 
 
 <div class="jumbotron">
@@ -141,7 +162,7 @@
                     
                     {
                         data: "name",
-                        "class" : "data",
+                        "class" : "data menu",
                     },
                     {
                         data: "image",
@@ -313,6 +334,26 @@
             sortType =  $(this).children("option:selected")[0]['value'];
             $('#tasks').DataTable().draw(true);
         });
+
+        var colIndex = 0;
+        var widths = [];
+        $('.dataTable thead th').each(function() {
+            widths.push(parseInt(this.style.width)+16);
+        })
+
+        $(".right-scroll").on('click', function() {
+            
+            if (colIndex == widths.length-1) return;
+            document.querySelector('.dataTables_scrollBody').scrollLeft += widths[colIndex];
+            colIndex++;
+        }) 
+        $(".left-scroll").on('click', function() {
+            if (colIndex == 0) return;
+            colIndex--;        
+            var scrollLeft = 0;
+            for (var i=0;i<colIndex;i++) { scrollLeft+=widths[i] }
+            document.querySelector('.dataTables_scrollBody').scrollLeft = scrollLeft;
+        }) 
 
         
 

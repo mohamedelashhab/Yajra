@@ -33,8 +33,8 @@
 
      
     
-    
-        
+     @yield('src_script')
+     @yield('style')
 
     </head>
 <body>

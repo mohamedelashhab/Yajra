@@ -1,0 +1,25 @@
+.scroll {
+    font-size: 100px;
+    font-size: bold;  
+    color: blck;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;    
+}
+.scroll:hover {
+    color: gray;
+    cursor: pointer;  
+}
+.left-scroll { 
+    position: relative;
+    z-index: 10;
+    left: 300px;
+    top: 250px;
+}    
+.right-scroll { 
+    position: relative;
+    z-index: 10;
+    left: 750px;
+    top: 250px;
+} 
