@@ -41,13 +41,48 @@
     <div class="container">
         @yield('content')
     </div>
-    
+
+    <script>
+        var sDate = '';
+        var eDate = '';
+            $(function() {
+
+                var startDate = moment().subtract(29, 'days');
+                var endDate = moment();
+            
+                function cb(startDate, endDate) {
+                    $('#reportrange span').html(startDate.format('YYYY-MM-DD') + ' - ' + endDate.format('YYYY-MM-DD'));
+                    sDate = startDate.format('YYYY-MM-DD');
+                    eDate =  endDate.format('YYYY-MM-DD');
+
+                }
+            
+                $('#reportrange').daterangepicker({
+                    startDate: startDate,
+                    endDate: endDate,
+                    ranges: {
+                       'Today': [moment(), moment()],
+                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                       'This Month': [moment().startOf('month'), moment().endOf('month')],
+                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cb);
+            
+                cb(startDate, endDate);
+                
+            
+            });
+    </script>
+{{--     
     <script>
             $(function() {   
                $('.daterange').daterangepicker();
             });
-            </script>
+            </script> --}}
 @stack('script')
+
 
 
 </body>

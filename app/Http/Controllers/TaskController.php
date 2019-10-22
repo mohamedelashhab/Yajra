@@ -29,15 +29,23 @@ class TaskController extends Controller
 
         $start_date = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
         $end_date = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
+        $filterBy = (!empty($_GET["filterBy"])) ? ($_GET["filterBy"]) : ('');
+        $sortType = (!empty($_GET["sortType"])) ? ($_GET["sortType"]) : ('DESC');
 
         
         
         if($start_date && $end_date){
             $start_date = Carbon::parse($start_date);
             $end_date = Carbon::parse($end_date);
-            $tasks = $tasks->select('*')->whereNull('deleted_at')->whereDate('created_at','>',$start_date);
-            $tasks->whereDate('created_at', '<', $end_date);
-        }else{
+            $tasks = $tasks->whereNull('deleted_at')->whereDate('created_at','>=',$start_date);
+            $tasks->whereDate('created_at', '<=', $end_date);
+        }
+        if($filterBy)
+        {
+            $tasks->orderBy($filterBy, $sortType);
+        }
+        
+        else{
             $tasks = $tasks->where('deleted_at', NULL);
         }
 

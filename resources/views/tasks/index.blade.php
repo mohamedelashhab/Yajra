@@ -11,6 +11,8 @@
 <table id="tasks" class="table" >
     <thead>
         <tr>
+
+            <th>Delete</th>
             <th>id</th>
             <th>name</th>
             <th>image</th>
@@ -19,21 +21,44 @@
             <th>date</th>
             <th>statuse</th>
             <th>Edit</th>
-            <th>Delete</th>
+            
         </tr>
     </thead>
     <tbody></tbody>
 </table>
-<div class="raw">
-<div class="col-md-1"><a href="{{route('task.create')}}"><button class="btn btn-primary" >Add Task</button></a></div>
-<div class="col-md-1"><button class="btn btn-danger js-delete">Delete</button></div>
-<input type="text" name="daterange" class="daterange form-control col-md-5 col-sm-2"  value="12/31/2019 - 01/31/2019"/>
-<button class="btn btn-default filterDate" value="Filter">Filter</button>
-</div>
+
+
+<div class="jumbotron">
+        <div class="row">
+           
+            <div class="col-md-8 col-sm-6">
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+            </div>
+            
+
+
+            <div class="col-md-2 col-sm-2">
+                <button class="btn btn-default filterDate" value="Filter">Filter</button>
+            </div>
+
+        </div>
+        <hr>
+        <div class="row">
+                <div style='position: absolute; center: 0;  padding: 0 0 0 0;'
+                 class="col-md-6 col-sm-6"><a href="{{route('task.create')}}"><button class="btn btn-primary" ><i class="fa fa-plus" aria-hidden="true"></i> Add New Task</button></a></div>
+
+        </div>
+        
+        
+            
+     
+    
+    </div>
 
 {{--  <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />  --}}
-
-
 
 
 
@@ -52,13 +77,25 @@
 @push('script')
 
 <script type="text/javascript">
+    
+
+    var sortType = 'DESC';
+    var filterBy = '';
+    var deleteFlag = 0;
     var start = '';
     var end = '';
     $(document).ready(function () {
+        $('.daterange').daterangepicker();
         
-       
-      
         var table = $("#tasks").DataTable({
+
+            {{-- table options --}}
+
+          
+            buttons: ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
+            
+
+            {{-- end options --}}
                 "sScrollX": "100%",
                 "sScrollXInner": "110%",
                 "bScrollCollapse": true,
@@ -69,12 +106,15 @@
                 serverSide: true,
                 "scrollX": true,
                 "scrollY": 400,
+              
                 ajax:
                 {
                     url: '{!! route('task.list') !!}',
                     data: function(d){
                         d.start_date = start;
                         d.end_date = end;
+                        d.filterBy = filterBy;
+                        d.sortType = sortType;
                         dataSrc: d.data;
                     },
                     type: 'GET',
@@ -84,9 +124,21 @@
                 [
                     {
                         data: "id",
-                        "class" : "data_id",
-
+                        "searchable":false,
+                        "orderable": false,
+                        render: function (data)
+                        {
+                            return "<input type='checkbox' class='form-control' name='tasks[]' value=" + data + ">";
+                            
+                            
+                        }
                     },
+
+                    {
+                        data: "id",
+                        "class": "data_id"
+                    },
+                    
                     {
                         data: "name",
                         "class" : "data",
@@ -131,22 +183,48 @@
                            
                         }
                     },
-                    {
-                        data: "id",
-                        "searchable":false,
-                        "orderable": false,
-                        render: function (data)
-                        {
-                            return "<input type='checkbox' class='' name='tasks[]' value=" + data + ">";
-                            
-                            
-                        }
-                    }
+                    
                 ]
-            })
-        $(".js-delete").on('click', function () {
-            
+            });
+
+            {{-- buttons --}}
+
+            {{-- get first  child of tasks_wrapper --}}
+            $('#tasks_wrapper').children().first().children().eq(0).removeClass("col-md-6").addClass("col-md-1");
+            $('#tasks_wrapper').children().first().children().eq(1).removeClass("col-md-6").addClass("col-md-10");
+            var leftCol = $('#tasks_wrapper').children().first().children().eq(0).append(`<div class="col-md-1"><button class="js-delete2" disabled><i class="fa fa-trash" aria-hidden="true"></i>
+            </button></div>`);
+
+            $('#tasks_length').remove();
+
+
+            var sortByLabelHtml = `<div class="col-md-3 dataTables_filter">
+                    <select id="tasks_filterBy" class="form-control form-control-sm" placeholder="sort by label" aria-controls="tasks" style="height:auto;font-size:12px;">
+                            <option value=""  disabled selected>Sort by label</option>
+                            <option value="name">name</option>
+                            <option value="user_name">User name</option>
+                            <option value="statuse">statuse</option>
+                            <option value="created_at">date</option>
+                    </select>
+            </div>`;
+
+            var sortTypeHtml = `<div class="col-md-3 dataTables_filter">
+                    <select id="tasks_filterType" class="form-control form-control-sm" placeholder="Sort type" aria-controls="tasks" style="height:auto;font-size:12px;">
+                            <option value=""  disabled selected>Sort Type</option>
+                            <option value="ASC">ASC</option>
+                            <option value="DESC">DESC</option>
+                    </select>
+            </div>`;
+
+            $('#tasks_filter').parent().append(sortByLabelHtml);
+            $('#tasks_filter').parent().prepend(sortTypeHtml);
+        
+            {{-- end buttons --}}
+
+        $(".js-delete2").on('click', function () {
             if(confirm("Are you sure you want to delete tasks ? ")){
+                deleteFlag= 0;
+                $('.js-delete2').attr("disabled", true);
                 var button = $(this);
                 var val = [];
                 $(':checkbox:checked').each(function(i){
@@ -162,7 +240,6 @@
     
                         }
                     });
-                    console.log(val[i]);
                     ch.parents("tr").remove();
                 });
             }
@@ -188,9 +265,21 @@
 
         
 
-        $("#search").on('click', function(){
-            
+        $("#tasks").on('change',':checkbox', function(){
 
+            if(this.checked) {
+                deleteFlag++;
+            }      
+            else{
+            
+                deleteFlag--;
+            }  
+
+            if(deleteFlag > 0) {
+                $(".js-delete2").removeAttr("disabled");
+            }else{
+                $(".js-delete2").attr("disabled", true);
+            }
         });
 
 
@@ -203,16 +292,37 @@
 
         $('.filterDate').on('click', function(){
 
-           var res = $('input[name="daterange"]')[0]['value'];
+           console.log(sDate, eDate);
+
+           start = sDate;
+           end = eDate;
+
+           {{-- var res = $('input[name="daterange"]')[0]['value'];
            var arr = res.split("-");
            start = arr[0].trim();
-           end = arr[1].trim();
-           console.log(start, end);
+           end = arr[1].trim(); --}}
            $('#tasks').DataTable().draw(true);
            
         });
 
+        $('select#tasks_filterBy').on('change', function(){
+            filterBy =  $(this).children("option:selected")[0]['value'];
+            $('#tasks').DataTable().draw(true);
+        });
+        $('select#tasks_filterType').on('change', function(){
+            sortType =  $(this).children("option:selected")[0]['value'];
+            $('#tasks').DataTable().draw(true);
+        });
+
+        
+
+        
+        
+
     });
+
+
+    
 
 
 
@@ -221,7 +331,6 @@
 
 @endpush
 
-@push('script')
 
 
 
