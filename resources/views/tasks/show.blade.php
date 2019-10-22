@@ -40,7 +40,7 @@
         <select name="statuse" id="statuse" class="form-control" required="required" disabled>
                 <label for="statuse">statuse:</label>
             @foreach (['statuse1', 'statuse2', 'statuse3'] as $item)
-                <option value="{{$item}}" {{$item==$task->statuse?'checked':''}}>{{$item}}</option>
+                <option value="{{$item}}" {{$item==$task->statuse?'selected':''}}>{{$item}}</option>
             @endforeach
         </select>
         

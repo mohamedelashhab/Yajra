@@ -48,9 +48,9 @@
         
     
         <label for="statuse">statuse:</label>
-        <select name="statuse" id="statuse" class="form-control" required="required">
+        <select name="statuse" id="statuse" class="form-control" style="" required="required">
             @foreach (['statuse1', 'statuse2', 'statuse3'] as $item)
-                <option value="{{$item}}" {{ !empty($task) && $item==$task->statuse  ?'checked':'' }}>{{$item}}</option>
+                <option value="{{$item}}" {{ (!empty($task) && $item==$task->statuse)  ?'selected':'' }}>{{$item}}</option>
             @endforeach
         </select>
         
@@ -60,7 +60,7 @@
 
     @if (count($errors) > 0)
 
-            <div class="alert alert-danger">
+            <div class="alert alert-danger"> 
 
                 <strong>Whoops!</strong> There were some problems with your input.
 
