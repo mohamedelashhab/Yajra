@@ -74,16 +74,10 @@ class TaskController extends Controller
             'status' => Rule::in(['status1', 'status2', 'status3']),
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
         $image_name = $this->saveFiles(request()->file('image'), 'images');
-        $request['image'] = $image_name;
-        // dd($request->all());
-        $task = Task::create($request->all());
-        
-        $task->image = $image_name;
-        // dd($task);
-        $task->save();
-
+        $data = $request->all();
+        $data['image'] = $image_name;
+        $task = Task::create($data);
         return redirect()->route('task.index');
     }
 
@@ -97,9 +91,7 @@ class TaskController extends Controller
 
     public function edit(Request $request,Task $task)
     {
-        if($task->image){
-            $request->image = $task->image;
-        }
+        
         request()->validate([
             'name' => 'required|min:1|max:49',
             'screen_name' => 'required|min:1|max:49',
@@ -109,9 +101,10 @@ class TaskController extends Controller
             'status' => Rule::in(['status1', 'status2', 'status3']),
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
-        $task->update(request()->all());
-        
+        $image_name = $this->saveFiles(request()->file('image'), 'images');
+        $data = $request->all();
+        $data['image'] = $image_name;
+        $task = $task->update($data);
         return redirect()->route('task.index');
 
     }
